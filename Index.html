@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+  <!--
+  ============================================================
+  FILE: index.html
+  PROJECT: Kusina ni Lola — Filipino Fusion Restaurant
+  DESCRIPTION: Main frontend page. Fetches data dynamically
+               from PHP REST API endpoints.
+  VERSION: 1.0.0
+  ============================================================
+-->
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Kusina ni Lola — Authentic Filipino Fusion Restaurant. Book a table, explore our menu."
+    />
+    <title>Kusina ni Lola | Filipino Fusion Restaurant</title>
+
+    <!-- ── Google Fonts ── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ── Main Stylesheet ── -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+    <nav id="navbar">
+      <div class="container nav-inner">
+        <!-- Brand logo -->
+        <a href="#hero" class="nav-logo">Kusina <span>ni Lola</span></a>
+
+        <!-- Right side: theme toggle + hamburger -->
+        <div class="nav-right">
+          <!-- Dark/Light mode toggle button -->
+          <!-- JS in main.js handles the toggle logic -->
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle light/dark mode"
+          >
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+
+          <!-- Hamburger button (mobile only) -->
+          <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-label="Toggle navigation"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+
+        <!-- Nav links -->
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#reservations">Reservations</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#reservations" class="btn-nav">Book a Table</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ============================================================
+       HERO SECTION
+  ============================================================ -->
+    <section id="hero">
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <p class="hero-tag">🇵🇭 Authentic Filipino Fusion</p>
+        <h1>Food Made With <span>Lola's Love</span></h1>
+        <p class="hero-sub">
+          Generations of tradition, reimagined for today. Experience the warmth
+          of Filipino home cooking in every dish we serve.
+        </p>
+        <div class="btn-group">
+          <a href="#menu" class="btn btn-primary">Explore Menu</a>
+          <a href="#reservations" class="btn btn-outline">Book a Table</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       MENU SECTION
+       Menu items loaded dynamically from api/v1/menu.php
+  ============================================================ -->
+    <section id="menu">
+      <div class="container">
+        <p class="section-label">What We Serve</p>
+        <h2 class="section-title">Our Menu</h2>
+
+        <!-- Filter buttons — JS adds category buttons dynamically -->
+        <div class="menu-filters" id="menuFilters">
+          <button class="filter-btn active" data-category="all">All</button>
+        </div>
+
+        <!-- Menu cards injected here by main.js -->
+        <div class="menu-grid" id="menuGrid">
+          <div class="loading-state" id="menuLoading">
+            <div class="spinner"></div>
+            <p>Loading menu...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       RESERVATIONS SECTION
+  ============================================================ -->
+    <section id="reservations">
+      <div class="container">
+        <p class="section-label">Join Us</p>
+        <h2 class="section-title">Book a Table</h2>
+        <p class="section-desc">
+          Reserve your spot and we will have everything ready for you.
+        </p>
+
+        <div class="form-card">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="res-name">Full Name *</label>
+              <input
+                type="text"
+                id="res-name"
+                placeholder="Juan dela Cruz"
+                autocomplete="name"
+              />
+              <span class="field-error" id="err-res-name"></span>
+            </div>
+            <div class="form-group">
+              <label for="res-email">Email Address *</label>
+              <input
+                type="email"
+                id="res-email"
+                placeholder="juan@email.com"
+                autocomplete="email"
+              />
+              <span class="field-error" id="err-res-email"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <!-- Replace your existing phone form-group with this -->
+            <div class="form-group">
+              <label for="res-phone">Phone Number *</label>
+              <div class="phone-input-wrap">
+                <!-- Country code dropdown -->
+                <select
+                  id="res-phone-code"
+                  class="phone-code-select"
+                  aria-label="Country code"
+                >
+                  <option value="+63">🇵🇭 +63</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+61">🇦🇺 +61</option>
+                  <option value="+65">🇸🇬 +65</option>
+                  <option value="+81">🇯🇵 +81</option>
+                  <option value="+82">🇰🇷 +82</option>
+                  <option value="+60">🇲🇾 +60</option>
+                  <option value="+66">🇹🇭 +66</option>
+                  <option value="+49">🇩🇪 +49</option>
+                  <option value="+33">🇫🇷 +33</option>
+                  <option value="+971">🇦🇪 +971</option>
+                  <option value="+91">🇮🇳 +91</option>
+                </select>
+
+                <!-- Number input (no country code — code comes from dropdown) -->
+                <input type="tel" id="res-phone" placeholder="912 345 6789" />
+              </div>
+              <span class="field-error" id="err-res-phone"></span>
+            </div>
+            <div class="form-group">
+              <label for="res-party">Party Size *</label>
+              <select id="res-party">
+                <option value="">Select size</option>
+                <option value="1">1 person</option>
+                <option value="2">2 people</option>
+                <option value="3">3 people</option>
+                <option value="4">4 people</option>
+                <option value="5">5 people</option>
+                <option value="6">6 people</option>
+                <option value="8">7–8 people</option>
+              </select>
+              <span class="field-error" id="err-res-party"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="res-date">Date *</label>
+              <input type="date" id="res-date" />
+              <span class="field-error" id="err-res-date"></span>
+            </div>
+            <div class="form-group">
+              <label for="res-time">Time *</label>
+              <select id="res-time">
+                <option value="">Select time</option>
+                <option value="11:00">11:00 AM</option>
+                <option value="11:30">11:30 AM</option>
+                <option value="12:00">12:00 PM</option>
+                <option value="12:30">12:30 PM</option>
+                <option value="13:00">1:00 PM</option>
+                <option value="13:30">1:30 PM</option>
+                <option value="17:00">5:00 PM</option>
+                <option value="17:30">5:30 PM</option>
+                <option value="18:00">6:00 PM</option>
+                <option value="18:30">6:30 PM</option>
+                <option value="19:00">7:00 PM</option>
+                <option value="19:30">7:30 PM</option>
+                <option value="20:00">8:00 PM</option>
+              </select>
+              <span class="field-error" id="err-res-time"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="res-notes">Special Requests (optional)</label>
+            <textarea
+              id="res-notes"
+              rows="3"
+              placeholder="Allergies, occasions, seating preferences..."
+            ></textarea>
+          </div>
+
+          <button
+            class="btn btn-primary btn-full"
+            id="resSubmitBtn"
+            onclick="submitReservation()"
+          >
+            Confirm Reservation
+          </button>
+          <div class="form-message" id="resMessage"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       ABOUT SECTION
+  ============================================================ -->
+    <section id="about">
+      <div class="container about-grid">
+        <div class="about-text">
+          <p class="section-label">Our Story</p>
+          <h2 class="section-title">A Taste of Home</h2>
+          <p>
+            Kusina ni Lola started in a small kitchen in Pampanga, where our
+            founder's grandmother cooked for the whole barangay every Sunday.
+            The recipes have not changed — only the kitchen got bigger.
+          </p>
+          <p>
+            Every dish is made from scratch using ingredients sourced from local
+            Filipino farmers and markets. Good food starts long before it hits
+            the pan.
+          </p>
+          <div class="about-stats">
+            <div class="stat">
+              <span class="stat-num">12+</span
+              ><span class="stat-label">Years Serving</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">50+</span
+              ><span class="stat-label">Menu Items</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">4.9 ⭐</span
+              ><span class="stat-label">Google Rating</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-card">
+          <h3>Visit Us</h3>
+          <ul class="info-list">
+            <li><span>📍</span>123 Magsaysay Ave, Quezon City</li>
+            <li><span>📞</span>+63 2 8123 4567</li>
+            <li><span>✉️</span>hello@kusinanilolaph.com</li>
+            <li><span>🕐</span>Mon–Fri: 11AM – 9PM</li>
+            <li><span>🕐</span>Sat–Sun: 10AM – 10PM</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       CONTACT SECTION
+  ============================================================ -->
+    <section id="contact">
+      <div class="container">
+        <p class="section-label">Get In Touch</p>
+        <h2 class="section-title">Send Us a Message</h2>
+
+        <div class="form-card">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="con-name">Full Name *</label>
+              <input type="text" id="con-name" placeholder="Juan dela Cruz" />
+              <span class="field-error" id="err-con-name"></span>
+            </div>
+            <div class="form-group">
+              <label for="con-email">Email Address *</label>
+              <input type="email" id="con-email" placeholder="juan@email.com" />
+              <span class="field-error" id="err-con-email"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="con-subject">Subject *</label>
+            <input
+              type="text"
+              id="con-subject"
+              placeholder="Reservation inquiry, feedback..."
+            />
+            <span class="field-error" id="err-con-subject"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="con-message">Message *</label>
+            <textarea
+              id="con-message"
+              rows="5"
+              placeholder="Write your message here..."
+            ></textarea>
+            <span class="field-error" id="err-con-message"></span>
+          </div>
+
+          <button
+            class="btn btn-primary btn-full"
+            id="conSubmitBtn"
+            onclick="submitContact()"
+          >
+            Send Message
+          </button>
+          <div class="form-message" id="conMessage"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+    <footer>
+      <div class="container footer-inner">
+        <p class="nav-logo">Kusina <span>ni Lola</span></p>
+        <p class="footer-copy">© 2026 Kusina ni Lola. All rights reserved.</p>
+        <p class="footer-dev">
+          Built by
+          <a
+            href="https://github.com/yourusername"
+            target="_blank"
+            rel="noopener"
+            >Your Name</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <!-- ── Main JavaScript — loaded at bottom for performance ── -->
+    <script src="js/main.js"></script>
+  </body>
+</html>

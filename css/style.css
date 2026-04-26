@@ -1,0 +1,733 @@
+/* ============================================================
+   FILE: css/style.css
+   PROJECT: Kusina ni Lola
+   DESCRIPTION: Main stylesheet with dark/light mode support
+                using CSS variables. JS toggles .light-mode
+                on <body> — no hardcoding needed.
+   ============================================================ */
+
+/* ── 1. CSS VARIABLES — DARK MODE (default) ─────────────────
+   All colors are defined here. To change the whole theme,
+   you only ever edit this section.
+   ──────────────────────────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --clr-bg: #0d0f1a;
+  --clr-surface: #161928;
+  --clr-surface-2: #1e2235;
+
+  /* Borders */
+  --clr-border: #252840;
+
+  /* Text */
+  --clr-text: #e2e4f0;
+  --clr-muted: #8b90b0;
+
+  /* Brand accent colors */
+  --clr-accent: #c9924a; /* warm gold — feels Filipino/food */
+  --clr-accent-2: #e8b06a;
+  --clr-accent-bg: rgba(201, 146, 74, 0.12);
+  --clr-accent-border: rgba(201, 146, 74, 0.3);
+
+  /* Hero overlay */
+  --hero-overlay: rgba(10, 10, 20, 0.65);
+
+  /* Shadows */
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
+
+  /* Shared */
+  --radius: 12px;
+  --transition: 0.3s ease;
+  --max-w: 1000px;
+}
+
+/* ── 2. CSS VARIABLES — LIGHT MODE ──────────────────────────
+   When JS adds .light-mode to <body>, these values override
+   the dark mode variables above. Everything else stays same.
+   ──────────────────────────────────────────────────────────── */
+body.light-mode {
+  --clr-bg: #f8f5f0;
+  --clr-surface: #ffffff;
+  --clr-surface-2: #f0ece6;
+  --clr-border: #e0ddd8;
+  --clr-text: #1a1a2e;
+  --clr-muted: #6b6880;
+  --clr-accent-bg: rgba(201, 146, 74, 0.1);
+  --hero-overlay: rgba(10, 10, 20, 0.55);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ── 3. CSS RESET ────────────────────────────────────────────
+   Removes inconsistent browser default styles
+   ──────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── 4. BASE STYLES ──────────────────────────────────────────*/
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  line-height: 1.7;
+  /* Smooth transition when switching modes */
+  transition:
+    background-color var(--transition),
+    color var(--transition);
+}
+
+a {
+  color: var(--clr-accent);
+  text-decoration: none;
+  transition: opacity var(--transition);
+}
+a:hover {
+  opacity: 0.8;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ── 5. LAYOUT UTILITY ───────────────────────────────────────*/
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+section {
+  padding: 5rem 0;
+}
+
+/* ── 6. TYPOGRAPHY UTILITIES ────────────────────────────────*/
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  margin-bottom: 0.4rem;
+}
+
+.section-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--clr-text);
+}
+
+.section-desc {
+  color: var(--clr-muted);
+  max-width: 500px;
+  margin-bottom: 2.5rem;
+}
+
+/* ── 7. BUTTONS ──────────────────────────────────────────────*/
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    opacity var(--transition);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+.btn-primary {
+  background: var(--clr-accent);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(201, 146, 74, 0.35);
+}
+.btn-primary:hover {
+  box-shadow: 0 6px 28px rgba(201, 146, 74, 0.5);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--clr-border);
+  color: var(--clr-text);
+}
+.btn-outline:hover {
+  border-color: var(--clr-accent);
+}
+
+.btn-full {
+  width: 100%;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.btn-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ── 8. NAVIGATION ───────────────────────────────────────────*/
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(13, 15, 26, 0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--clr-border);
+  transition: background var(--transition);
+}
+
+/* Light mode navbar override */
+body.light-mode #navbar {
+  background: rgba(248, 245, 240, 0.92);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+.nav-logo {
+  font-family: "Playfair Display", serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+.nav-logo span {
+  color: var(--clr-accent);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--clr-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.nav-links a:hover {
+  color: var(--clr-text);
+  opacity: 1;
+}
+
+.btn-nav {
+  background: var(--clr-accent);
+  color: #fff !important;
+  padding: 0.45rem 1.1rem;
+  border-radius: 8px;
+  font-weight: 600 !important;
+}
+
+/* Right side controls wrapper */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* ── Theme Toggle Button ── */
+.theme-toggle {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition:
+    background var(--transition),
+    border-color var(--transition);
+}
+.theme-toggle:hover {
+  border-color: var(--clr-accent);
+}
+
+/* Show sun in dark mode, moon in light mode */
+.theme-toggle .icon-sun {
+  display: none;
+}
+.theme-toggle .icon-moon {
+  display: inline;
+}
+body.light-mode .theme-toggle .icon-sun {
+  display: inline;
+}
+body.light-mode .theme-toggle .icon-moon {
+  display: none;
+}
+
+/* ── Hamburger (mobile) ── */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--clr-text);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+/* ── 9. HERO SECTION ─────────────────────────────────────────*/
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 5rem;
+  position: relative;
+  /* Background image — replace with real restaurant photo */
+  background: linear-gradient(135deg, #1a0a00 0%, #2d1200 50%, #0d0f1a 100%);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--hero-overlay);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+}
+
+.hero-tag {
+  display: inline-block;
+  background: var(--clr-accent-bg);
+  color: var(--clr-accent);
+  border: 1px solid var(--clr-accent-border);
+  border-radius: 999px;
+  padding: 0.3rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin-bottom: 1.5rem;
+}
+
+#hero h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+  color: #fff;
+}
+#hero h1 span {
+  color: var(--clr-accent);
+}
+
+.hero-sub {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.05rem;
+  max-width: 480px;
+  margin-bottom: 2rem;
+}
+
+/* ── 10. MENU SECTION ────────────────────────────────────────*/
+#menu {
+  border-top: 1px solid var(--clr-border);
+}
+
+/* Filter buttons */
+.menu-filters {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.filter-btn {
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--clr-border);
+  background: transparent;
+  color: var(--clr-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: all var(--transition);
+}
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--clr-accent);
+  color: #fff;
+  border-color: var(--clr-accent);
+}
+
+/* Menu grid */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Individual menu card */
+.menu-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-shadow: var(--shadow-card);
+  /* Fade-in animation when cards load */
+  animation: fadeUp 0.4s ease both;
+  transition:
+    transform var(--transition),
+    border-color var(--transition);
+}
+.menu-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--clr-accent);
+}
+
+.menu-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.menu-card-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+.menu-card-price {
+  font-weight: 700;
+  color: var(--clr-accent);
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.menu-card-desc {
+  font-size: 0.86rem;
+  color: var(--clr-muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.menu-card-category {
+  display: inline-block;
+  background: var(--clr-accent-bg);
+  color: var(--clr-accent);
+  border-radius: 999px;
+  padding: 0.18rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  align-self: flex-start;
+}
+
+/* Loading state */
+.loading-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: var(--clr-muted);
+}
+
+/* Spinner animation */
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--clr-border);
+  border-top-color: var(--clr-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ── 11. FORMS (Reservations + Contact) ──────────────────────*/
+#reservations,
+#contact {
+  border-top: 1px solid var(--clr-border);
+}
+
+.form-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  max-width: 700px;
+  box-shadow: var(--shadow-card);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.2rem;
+}
+.form-row .form-group {
+  margin-bottom: 0;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+input,
+select,
+textarea {
+  background: var(--clr-surface-2);
+  border: 1px solid var(--clr-border);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  color: var(--clr-text);
+  font-size: 0.9rem;
+  font-family: inherit;
+  width: 100%;
+  transition: border-color var(--transition);
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--clr-accent);
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--clr-muted);
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Inline field error messages */
+.field-error {
+  font-size: 0.78rem;
+  color: #ff6b6b;
+  min-height: 1rem;
+}
+
+/* Success / error banner after form submit */
+.form-message {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: none; /* shown by JS */
+}
+.form-message.success {
+  background: rgba(61, 220, 132, 0.12);
+  border: 1px solid rgba(61, 220, 132, 0.3);
+  color: #3ddc84;
+  display: block;
+}
+.form-message.error {
+  background: rgba(255, 107, 107, 0.12);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: #ff6b6b;
+  display: block;
+}
+
+/* ── Phone input with country code dropdown ── */
+.phone-input-wrap {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Country code select — narrower than regular selects */
+.phone-code-select {
+  width: auto;
+  min-width: 110px;
+  flex-shrink: 0;
+}
+
+/* Phone number input takes remaining space */
+.phone-input-wrap input[type="tel"] {
+  flex: 1;
+}
+
+/* ── 12. ABOUT SECTION ───────────────────────────────────────*/
+#about {
+  border-top: 1px solid var(--clr-border);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.about-text p {
+  color: var(--clr-muted);
+  margin-bottom: 1rem;
+}
+
+.about-stats {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.stat-num {
+  display: block;
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--clr-accent);
+}
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--clr-muted);
+}
+
+.about-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+}
+.about-card h3 {
+  font-family: "Playfair Display", serif;
+  margin-bottom: 1.2rem;
+  color: var(--clr-text);
+}
+
+.info-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.info-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--clr-muted);
+}
+
+/* ── 13. FOOTER ──────────────────────────────────────────────*/
+footer {
+  border-top: 1px solid var(--clr-border);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-copy,
+.footer-dev {
+  font-size: 0.85rem;
+  color: var(--clr-muted);
+}
+
+/* ── 14. ANIMATIONS ──────────────────────────────────────────*/
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── 15. RESPONSIVE — MOBILE ─────────────────────────────────*/
+@media (max-width: 768px) {
+  /* Hide nav links on mobile — shown when hamburger clicked */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--clr-surface);
+    border-bottom: 1px solid var(--clr-border);
+    padding: 1.5rem;
+    gap: 1.2rem;
+  }
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  /* Stack form rows on mobile */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stack about section on mobile */
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-stats {
+    gap: 1.2rem;
+  }
+
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+}

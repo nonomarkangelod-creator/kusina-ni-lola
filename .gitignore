@@ -1,0 +1,25 @@
+# Environment variables — contains DB credentials, NEVER commit
+.env
+.env.local
+.env.*.local
+
+# Config folder — contains db.php with live credentials
+config/secrets.php
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# VS Code settings (optional — remove # if you want to share settings)
+# .vscode/
+
+# Node modules (for when we add npm tools later)
+node_modules/
+
+# PHP error logs
+*.log
+error_log
+
+# Upload folders (user uploaded files — not for GitHub)
+uploads/
